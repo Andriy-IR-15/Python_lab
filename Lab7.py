@@ -1,7 +1,7 @@
 class Fridge:
     instance = None
 
-    def __init__(self, brand="", model="", capacity=28, is_defrosting=True, energy_efficiency_class="A"):
+    def __init__(self, brand="", model="", capacity=23, is_defrosting=True, energy_efficiency_class="A"):
         self.brand = brand
         self.model = model
         self.capacity = capacity
