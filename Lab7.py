@@ -1,7 +1,7 @@
 class Fridge:
-    instance = None
+    __instance = None
 
-    def __init__(self, brand="", model="", capacity=23, is_defrosting=True, energy_efficiency_class="A"):
+    def __init__(self, brand="", model="", capacity="", is_defrosting=False, energy_efficiency_class="A"):
         self.brand = brand
         self.model = model
         self.capacity = capacity
@@ -10,10 +10,11 @@ class Fridge:
 
     @classmethod
     def get_instance(cls):
-        if not cls.instance:
-            cls.instance = Fridge()
-        return cls.instance
+        if not cls.__instance:
+            cls.__instance = Fridge()
+        return cls.__instance
 
+    @staticmethod
     def turn_on_defrosting(self):
         self.is_defrosting = True
 
@@ -25,8 +26,10 @@ class Fridge:
 
 
 fridge_array = [
-    Fridge("Samsung", "RT21M63SG", 23, False, "A"),
+    Fridge("Samsung", "RT21M63SG", "23", False, "A"),
+    Fridge("Xiaomi", "BM34G9KF", "18", True, "B")
 ]
 
-for fridge in fridge_array:
-    print(vars(fridge))
+if __name__ == '__main__':
+    for fridge in fridge_array:
+        print(vars(fridge))
