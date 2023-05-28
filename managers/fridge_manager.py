@@ -1,56 +1,45 @@
-"""
-Модуль, що містить клас FridgeManager для управління холодильниками.
-"""
-
-from models.fridge import Fridge
-
-
-class FridgeManager(Fridge):
-    """
-    Клас, що представляє менеджер холодильників.
-    """
-
+class FridgeManager:
     def __init__(self):
         self.fridges = []
 
     def add_fridge(self, fridge):
-        """
-        Додає холодильник до списку холодильників в FridgeManager.
-
-        :param fridge: Холодильник, який слід додати.
-        """
         self.fridges.append(fridge)
 
     def search_by_max_usable_capacity(self, capacity):
-        """
-        Пошук холодильників за максимальною корисною ємністю.
-
-        :param capacity: Максимальна корисна ємність для пошуку.
-        :return: Список холодильників, які мають максимальну корисну ємність, більшу або рівну вказаній ємності.
-        """
         return [fridge for fridge in self.fridges if fridge.get_max_usable_capacity() >= capacity]
 
     def search_by_class(self, fridge_class):
-        """
-        Пошук холодильників за класом.
-
-        :param fridge_class: Клас холодильника для пошуку.
-        :return: Список холодильників, які належать до вказаного класу.
-        """
         return [fridge for fridge in self.fridges if isinstance(fridge, fridge_class)]
 
-    def get_max_usable_capacity(self):
-        """
-        Отримання максимальної корисної ємності FridgeManager.
-
-        :return: Максимальна корисна ємність FridgeManager.
-        """
-        return 0
-
     def __str__(self):
-        """
-        Повертає рядок, що представляє FridgeManager.
+        return "Fridge Manager"
 
-        :return: Рядок, що представляє FridgeManager.
-        """
-        return "Менеджер холодильників"
+    def __len__(self):
+        return len(self.fridges)
+
+    def __getitem__(self, index):
+        return self.fridges[index]
+
+    def __iter__(self):
+        return iter(self.fridges)
+
+    def do_something_for_all(self):
+        return [fridge.do_something() for fridge in self.fridges]
+
+    def get_object_with_index(self):
+        return [(index, fridge) for index, fridge in enumerate(self.fridges)]
+
+    def get_object_with_do_something(self):
+        return [(fridge, fridge.do_something()) for fridge in self.fridges]
+
+    def get_object_with_index_and_do_something(self):
+        return [(index, fridge, fridge.do_something()) for index, fridge in enumerate(self.fridges)]
+
+    def get_attributes_by_type(self, data_type):
+        return {key: value for key, value in self.__dict__.items() if isinstance(value, data_type)}
+
+    def check_conditions(self, condition):
+        return {
+            "all": all(condition(fridge) for fridge in self.fridges),
+            "any": any(condition(fridge) for fridge in self.fridges)
+        }

@@ -1,51 +1,28 @@
-"""
-Модуль, що містить клас Freezer для представлення морозильника.
-"""
-
 from models.fridge import Fridge
 
 
 class Freezer(Fridge):
-    """
-    Клас, що представляє морозильник.
-    """
+    def __init__(self):
+        super().__init__()
+        self.favorite_food_set = {"worms", "grain"}
 
     @staticmethod
     def get_temperature():
-        """
-        Отримати температуру морозильника.
-
-        :return: Температура морозильника.
-        """
         return -20
 
     @staticmethod
     def method1():
-        """
-        Виконати метод 1, специфічний для морозильника.
-        """
-        print("Максимальна температура морозильника: -15 градусів")
+        print("Freezer Maximum temperature: -15 degrees")
 
     @staticmethod
     def method2():
-        """
-        Виконати метод 2, специфічний для морозильника.
-        """
-        print("Мінімальна температура морозильника: -2 градуси")
+        print("Freezer Minimum temperature: -2 degrees")
+
+    def do_something(self):
+        return "Doing something in Freezer"
 
     def get_max_usable_capacity(self):
-        """
-        Отримати максимальну корисну ємність морозильника.
-
-        :return: Максимальна корисна ємність морозильника.
-        """
         return 48
 
     def __str__(self):
-        """
-        Повертає рядок, що представляє морозильник.
-
-        :return: Рядок, що представляє морозильник.
-        """
-        return f"Морозильник (Температура: {self.get_temperature()}, " \
-               f"Максимальна корисна ємність: {self.get_max_usable_capacity()})"
+        return f"Freezer (Temperature: {self.get_temperature()}, Max Usable Capacity: {self.get_max_usable_capacity()})"

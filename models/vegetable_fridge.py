@@ -1,39 +1,20 @@
-"""
-Модуль, що містить клас VegetableFridge для представлення холодильника для овочів.
-"""
-
 from models.fridge import Fridge
 
 
 class VegetableFridge(Fridge):
-    """
-    Клас, що представляє холодильник для овочів.
-    """
-
-    def __init__(self, max_vegetable_count, max_vegetable_weight):
-        """
-        Ініціалізує об'єкт холодильника для овочів.
-
-        :param max_vegetable_count: Максимальна кількість овочів.
-        :param max_vegetable_weight: Максимальна вага овочів.
-        """
-        self.max_vegetable_count = max_vegetable_count
-        self.max_vegetable_weight = max_vegetable_weight
+    def __init__(self, number_of_drawers, drawer_capacity):
+        super().__init__()
+        self.number_of_drawers = number_of_drawers
+        self.drawer_capacity = drawer_capacity
 
     def get_max_usable_capacity(self):
-        """
-        Отримати максимальну корисну ємність холодильника для овочів.
+        return self.number_of_drawers * self.drawer_capacity
 
-        :return: Максимальна корисна ємність холодильника для овочів.
-        """
-        return self.max_vegetable_count * self.max_vegetable_weight
+    def do_something(self):
+        return "Doing something in VegetableFridge"
 
     def __str__(self):
-        """
-        Повертає рядок, що представляє холодильник для овочів.
+        return f"Vegetable Fridge (Number of Drawers: {self.number_of_drawers}, Max Usable Capacity: {self.get_max_usable_capacity()})"
 
-        :return: Рядок, що представляє холодильник для овочів.
-        """
-        return f"Vegetable Fridge (Max Vegetable Count: {self.max_vegetable_count}, " \
-               f"Max Vegetable Weight: {self.max_vegetable_weight}, " \
-               f"Max Usable Capacity: {self.get_max_usable_capacity()})"
+    def __iter__(self):
+        return iter(self.favorite_food_set)

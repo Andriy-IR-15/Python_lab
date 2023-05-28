@@ -1,39 +1,29 @@
-"""
-Модуль, що містить клас WineFridge для представлення холодильника для вина.
-"""
-
 from models.fridge import Fridge
 
 
+def create_result_file(file_name):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)
+            with open(file_name, 'a') as file:
+                file.write(str(result) + '\n')
+            return result
+        return wrapper
+    return decorator
+
+
 class WineFridge(Fridge):
-    """
-    Клас, що представляє холодильник для вина.
-    """
+    def __init__(self, number_of_bottles, bottle_capacity):
+        super().__init__()
+        self.number_of_bottles = number_of_bottles
+        self.bottle_capacity = bottle_capacity
 
-    def __init__(self, max_bottle_count, max_bottle_volume):
-        """
-        Ініціалізує об'єкт холодильника для вина.
-
-        :param max_bottle_count: Максимальна кількість пляшок.
-        :param max_bottle_volume: Максимальний об'єм пляшок.
-        """
-        self.max_bottle_count = max_bottle_count
-        self.max_bottle_volume = max_bottle_volume
-
+    @create_result_file('get_max_usable_capacity.txt')
     def get_max_usable_capacity(self):
-        """
-        Отримати максимальну корисну ємність холодильника для вина.
+        return self.number_of_bottles * self.bottle_capacity
 
-        :return: Максимальна корисна ємність холодильника для вина.
-        """
-        return self.max_bottle_count * self.max_bottle_volume
+    def do_something(self):
+        return "Doing something in WineFridge"
 
     def __str__(self):
-        """
-        Повертає рядок, що представляє холодильник для вина.
-
-        :return: Рядок, що представляє холодильник для вина.
-        """
-        return f"Wine Fridge (Max Bottle Count: {self.max_bottle_count}, " \
-               f"Max Bottle Volume: {self.max_bottle_volume}, " \
-               f"Max Usable Capacity: {self.get_max_usable_capacity()})"
+        return f"Wine Fridge (Number of Bottles: {self.number_of_bottles}, Max Usable Capacity: {self.get_max_usable_capacity()})"
