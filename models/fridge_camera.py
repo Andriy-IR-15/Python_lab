@@ -1,3 +1,4 @@
+from models.freezer import TemperatureOutOfRange, logged
 from models.fridge import Fridge
 
 
@@ -47,9 +48,23 @@ class FridgeCamera(Fridge):
         self.sausage_movement_type = sausage_movement_type
         self.tape_speed = tape_speed
         self.max_sausage_weight = max_sausage_weight
+        self.fridges = []
 
-    def do_something(self):
-        return "Doing something in FridgeCamera"
+    @staticmethod
+    def check_temperature(temperature):
+        min_temperature = -15
+        max_temperature = -2
+        if temperature < min_temperature or temperature > max_temperature:
+            raise TemperatureOutOfRange("Temperature is out of range!")
+
+    @logged(TemperatureOutOfRange, "console")
+    def do_something(self, temperature):
+        try:
+            self.check_temperature(temperature)
+            return "Doing something in FridgeCamera"
+        except TemperatureOutOfRange as e:
+            print(f"Error: {e}")
+            return None
 
     @method_calls_counter('text.txt')
     def get_max_usable_capacity(self):
@@ -58,18 +73,8 @@ class FridgeCamera(Fridge):
     def __str__(self):
         return f"Fridge Camera (Number of Entries: {self.number_of_entries}, Max Usable Capacity: {self.get_max_usable_capacity()})"
 
+    def add_fridge(self, fridge):
+        self.fridges.append(fridge)
 
-class WineFridge(Fridge):
-    def __init__(self, number_of_bottles, bottle_capacity):
-        super().__init__()
-        self.number_of_bottles = number_of_bottles
-        self.bottle_capacity = bottle_capacity
-
-    def get_max_usable_capacity(self):
-        return self.number_of_bottles * self.bottle_capacity
-
-    def do_something(self):
-        return "Doing something in WineFridge"
-
-    def __str__(self):
-        return f"Wine Fridge (Number of Bottles: {self.number_of_bottles}, Max Usable Capacity: {self.get_max_usable_capacity()})"
+    def do_something_for_all(self, temperature=None):
+        return [fridge.do_something(temperature) for fridge in self.fridges]

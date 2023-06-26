@@ -1,4 +1,26 @@
 from models.fridge import Fridge
+import logging
+
+
+def logged(exception, mode):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except exception as e:
+                if mode == "console":
+                    logging.error(str(e))
+                elif mode == "file":
+                    logging.basicConfig(filename='log.txt', level=logging.ERROR)
+                    logging.error(str(e))
+                else:
+                    logging.error(f"Invalid logging mode: {mode}")
+        return wrapper
+    return decorator
+
+
+class TemperatureOutOfRange(Exception):
+    pass
 
 
 class Freezer(Fridge):
@@ -18,8 +40,23 @@ class Freezer(Fridge):
     def method2():
         print("Freezer Minimum temperature: -2 degrees")
 
-    def do_something(self):
-        return "Doing something in Freezer"
+    @staticmethod
+    def check_temperature(temperature):
+        min_temperature = -15
+        max_temperature = -2
+        if temperature < min_temperature or temperature > max_temperature:
+            raise TemperatureOutOfRange("Temperature is out of range!")
+
+    @logged(TemperatureOutOfRange, "console")
+    def do_something(self, temperature=None):
+        if temperature is None:
+            temperature = int(input("Enter the temperature: "))
+        try:
+            self.check_temperature(temperature)
+            return "Doing something in Freezer"
+        except TemperatureOutOfRange as e:
+            print(f"Error: {e}")
+            return None
 
     def get_max_usable_capacity(self):
         return 48
